@@ -16,46 +16,45 @@ class Main {
     public String cals(String input) {
         String[] space = {" "};
         String[] inputSplit = input.split(Arrays.toString(space));
-        String exception = "throws Exception";
         Main romanExamination = new Main();
         Main arabToRome = new Main();
         boolean romanOrArab = false;
         int result;
+
         if (inputSplit.length != 3) {
-            return exception;
-        }
-        int firstnumber;
-        int secondNumber;
+            throw new RuntimeException("Используется только 3 символа");}
+
+        int firstNumber = 0;
+        int secondNumber = 0;
 
         try {
-            firstnumber = Integer.parseInt(inputSplit[0]);
+            firstNumber = Integer.parseInt(inputSplit[0]);
             secondNumber = Integer.parseInt(inputSplit[2]);
         } catch (NumberFormatException e) {
             try {
-                firstnumber = romanExamination.romanToArab(inputSplit[0]);
+                firstNumber = romanExamination.romanToArab(inputSplit[0]);
                 secondNumber = romanExamination.romanToArab(inputSplit[2]);
                 romanOrArab = true;
-            } catch (NumberFormatException e1) {
-                return exception;
+            } catch (NumberFormatException ignored) {
             }
         }
-         if ((firstnumber > 10) || (firstnumber < 1) || (secondNumber > 10)){
-             return exception;
-         }
+
+        if ((firstNumber > 10) || (firstNumber < 1) || (secondNumber > 10) || (secondNumber < 1)){
+             throw new RuntimeException("Неправильный ввод символов");
+        }
+
          String operator = inputSplit[1];
          switch (operator){
-             case "+" -> result = firstnumber + secondNumber;
-             case "-" -> result = firstnumber - secondNumber;
-             case "*" -> result = firstnumber * secondNumber;
-             case "/" -> result = firstnumber / secondNumber;
-             default -> {
-                 return exception;
-             }
+             case "+" -> result = firstNumber + secondNumber;
+             case "-" -> result = firstNumber - secondNumber;
+             case "*" -> result = firstNumber * secondNumber;
+             case "/" -> result = firstNumber / secondNumber;
+             default -> throw new RuntimeException("Неправильный ввод знака");
          }
          String output;
          if (romanOrArab){
              if(result < 1){
-                 return  exception;
+                 throw new  NumberFormatException("Римское число не может быть меньше 0");
              } else {
                  output = arabToRome.arabToRome(result);
              }
@@ -63,7 +62,6 @@ class Main {
              output = Integer.toString(result);
          }
          return output;
-
     }
 
     Integer romanToArab(String romanInput) {
@@ -94,5 +92,3 @@ class Main {
         return result;
     }
 }
-
-
